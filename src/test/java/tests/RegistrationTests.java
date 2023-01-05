@@ -44,10 +44,12 @@ public class RegistrationTests {
         $("#subjectsInput").setValue("Maths").pressEnter();
         $("#hobbiesWrapper").$(byText("Music")).click();
         $("#uploadPicture").uploadFromClasspath("IMG/1.png");
+        $("#state").scrollTo();
         $("#state").click();
         $("#stateCity-wrapper").$(byText("NCR")).click();
         $("#city").click();
         $("#stateCity-wrapper").$(byText("Delhi")).click();
+        $("#submit").pressEnter();
         $("#submit").click();
 
         $(".modal-dialog").should(appear);
