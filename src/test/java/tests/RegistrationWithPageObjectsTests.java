@@ -30,6 +30,18 @@ public class RegistrationWithPageObjectsTests extends TestBase {
         String path = "IMG/1.png";
         String state = "NCR";
         String city = "Delhi";
+        String emailKey = "Student Email";
+        String genderKey = "Gender";
+        String mobileKey = "Mobile";
+        String birthKey = "Date of Birth";
+        String subjectKey = "Subjects";
+        String hobbyKey = "Hobbies";
+        String fileKey = "Picture";
+        String addressKey = "Address";
+        String stateAndCityKey = "State and City";
+        String substrPath = path.substring(4);
+
+
 
         registrationPage.openPage().
                 setFirstName(userName).
@@ -48,7 +60,16 @@ public class RegistrationWithPageObjectsTests extends TestBase {
 
 
         registrationPage.verifyResultsModalAppears()
-                .verifyResult(nameKey, userName + " " + lastName);
+                .verifyResult(nameKey, userName + " " + lastName)
+                .verifyResult(emailKey, userEmail)
+                .verifyResult(genderKey, gender)
+                .verifyResult(mobileKey, number)
+                .verifyResult(birthKey, day + " " + month + "," + year)
+                .verifyResult(subjectKey, subject)
+                .verifyResult(hobbyKey, hobby)
+                .verifyResult(fileKey, substrPath)
+                .verifyResult(addressKey, address)
+                .verifyResult(stateAndCityKey, state + " " + city);
 
 
     }
