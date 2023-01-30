@@ -3,60 +3,75 @@ package tests;
 import com.github.javafaker.Faker;
 import org.junit.jupiter.api.Test;
 
+import java.text.SimpleDateFormat;
 import java.util.Locale;
-
-import static com.codeborne.selenide.Condition.appear;
-import static com.codeborne.selenide.Condition.text;
-import static com.codeborne.selenide.Selectors.byText;
-import static com.codeborne.selenide.Selenide.*;
-import static utils.RandomUtils.*;
 
 public class RegistrationWithFakerTests extends TestBase {
 
 
-
     @Test
-    void successfulRegistrationTest(){
+    void successfulRegistrationTest() {
 
-        //Faker faker = new Faker();
+       Faker faker = new Faker(new Locale("ru"));
+       SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMMM yyyy", Locale.ENGLISH);
+       String[] birthday = dateFormat.format(faker.date().birthday()).split(" ");
 
-        Faker faker = new Faker(new Locale("ru"));
-
-        String userName = faker.name().firstName();
-        String lastName = faker.name().lastName();
-        String userEmail = faker.internet().emailAddress();
-        String phoneNumber = faker.phoneNumber().subscriberNumber(10);
-        String address = faker.address().fullAddress();
-
-
-        open("/automation-practice-form");
-        executeJavaScript("$('footer').remove()");
-
-        $(".practice-form-wrapper").shouldHave(text("Student Registration Form"));
-        $("#firstName").setValue(userName);
-        $("#lastName").setValue(lastName);
-        $("#userEmail").setValue(userEmail);
-        $("#userNumber").setValue(phoneNumber);
-       $("#currentAddress").setValue(address);
-        $("#genterWrapper").$(byText("Other")).click();
-        $("#dateOfBirthInput").click();
-        $(".react-datepicker__month-select").selectOption("April");
-        $(".react-datepicker__year-select").selectOption("1995");
-        $(".react-datepicker__day--003:not(.react-datepicker__day--outside-month)").click();
-        $("#subjectsInput").setValue("Maths").pressEnter();
-        $("#hobbiesWrapper").$(byText("Music")).click();
-        $("#uploadPicture").uploadFromClasspath("IMG/1.png");
-        $("#state").scrollTo().click();
-        $("#stateCity-wrapper").$(byText("NCR")).click();
-        $("#city").click();
-        $("#stateCity-wrapper").$(byText("Delhi")).click();
-        $("#submit").pressEnter();
+     String userName = faker.name().firstName(),
+            lastName = faker.name().lastName(),
+            userEmail = faker.internet().emailAddress("ru"),
+            address = faker.address().fullAddress(),
+            gender = "Male",
+            number = faker.phoneNumber().subscriberNumber(10),
+            day = birthday[0],
+            month = birthday[1],
+            year = birthday[2],
+            nameKey = "Student Name",
+            subject = "Maths",
+            hobby = "Music",
+            path = "IMG/1.png",
+            state = "NCR",
+            city = "Delhi",
+            emailKey = "Student Email",
+            genderKey = "Gender",
+            mobileKey = "Mobile",
+            birthKey = "Date of Birth",
+            subjectKey = "Subjects",
+            hobbyKey = "Hobbies",
+            fileKey = "Picture",
+            addressKey = "Address",
+            stateAndCityKey = "State and City",
+            substrPath = path.substring(4);
 
 
-        $(".modal-dialog").should(appear);
-        $("#example-modal-sizes-title-lg").shouldHave(text("Thanks for submitting the form"));
-        $("#example-modal-sizes-title-lg").shouldHave(text("Thanks for submitting the form"));
-        $(".table-responsive").shouldHave(text(userName), text(userEmail), text(address));
+
+        registrationPage.openPage().
+                setFirstName(userName).
+                setLastName(lastName).
+                setEmail(userEmail).
+                setGender(gender).
+                setNumber(number).
+                setBirthDate(day, month, year).
+                setAddress(address).
+                setSubject(subject).
+                setHobby(hobby).
+                uploadFile(path).
+                setState(state).
+                setCity(city).
+                setSubmit();
+
+
+        registrationPage.verifyResultsModalAppears()
+                .verifyResult(nameKey, userName + " " + lastName)
+                .verifyResult(emailKey, userEmail)
+                .verifyResult(genderKey, gender)
+                .verifyResult(mobileKey, number)
+                .verifyResult(birthKey, day + " " + month + "," + year)
+                .verifyResult(subjectKey, subject)
+                .verifyResult(hobbyKey, hobby)
+                .verifyResult(fileKey, substrPath)
+                .verifyResult(addressKey, address)
+                .verifyResult(stateAndCityKey, state + " " + city);
+
 
     }
 

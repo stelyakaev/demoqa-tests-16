@@ -16,7 +16,7 @@ public class RegistrationWithPageObjectsTests extends TestBase {
     @Test
     void successfulRegistrationTest() {
 
-/*        String userName = "Alex";
+     String userName = "Alex";
         String lastName = "Ivanov";
         String userEmail = "ivanov@hmail.com";
         String address = "current address";
@@ -40,7 +40,7 @@ public class RegistrationWithPageObjectsTests extends TestBase {
         String fileKey = "Picture";
         String addressKey = "Address";
         String stateAndCityKey = "State and City";
-        String substrPath = path.substring(4);*/
+        String substrPath = path.substring(4);
 
 
 
