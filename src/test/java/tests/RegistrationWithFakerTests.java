@@ -1,30 +1,33 @@
 package tests;
 
-import com.codeborne.selenide.Configuration;
-import org.junit.jupiter.api.BeforeAll;
+import com.github.javafaker.Faker;
 import org.junit.jupiter.api.Test;
+
+import java.util.Locale;
 
 import static com.codeborne.selenide.Condition.appear;
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.*;
-import static utils.RandomUtils.randomEmail;
-import static utils.RandomUtils.randomString;
-import static utils.RandomUtils.randomNumber;
-import static utils.RandomUtils.randomPhone;
+import static utils.RandomUtils.*;
 
-public class RegistrationWithRandomUtilsTests extends TestBase {
+public class RegistrationWithFakerTests extends TestBase {
 
 
 
     @Test
     void successfulRegistrationTest(){
 
-        String userName = randomString(10);
-        String lastName = randomString(10);
-        String userEmail = randomEmail(10);
-        String address = randomString(10);
-        String phoneNumber = randomPhone("8",9000000000L, 9999999999L);
+        //Faker faker = new Faker();
+
+        Faker faker = new Faker(new Locale("ru"));
+
+        String userName = faker.name().firstName();
+        String lastName = faker.name().lastName();
+        String userEmail = faker.internet().emailAddress();
+        String phoneNumber = faker.phoneNumber().subscriberNumber(10);
+        String address = faker.address().fullAddress();
+
 
         open("/automation-practice-form");
         executeJavaScript("$('footer').remove()");
@@ -34,7 +37,7 @@ public class RegistrationWithRandomUtilsTests extends TestBase {
         $("#lastName").setValue(lastName);
         $("#userEmail").setValue(userEmail);
         $("#userNumber").setValue(phoneNumber);
-        $("#currentAddress").setValue(address);
+       $("#currentAddress").setValue(address);
         $("#genterWrapper").$(byText("Other")).click();
         $("#dateOfBirthInput").click();
         $(".react-datepicker__month-select").selectOption("April");
@@ -53,7 +56,7 @@ public class RegistrationWithRandomUtilsTests extends TestBase {
         $(".modal-dialog").should(appear);
         $("#example-modal-sizes-title-lg").shouldHave(text("Thanks for submitting the form"));
         $("#example-modal-sizes-title-lg").shouldHave(text("Thanks for submitting the form"));
-       // $(".table-responsive").shouldHave(text(userName), text(userEmail), text(address));
+        $(".table-responsive").shouldHave(text(userName), text(userEmail), text(address));
 
     }
 
