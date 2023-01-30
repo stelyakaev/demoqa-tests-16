@@ -8,6 +8,7 @@ import static com.codeborne.selenide.Condition.appear;
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.$;
+import static tests.TestData.*;
 
 public class RegistrationWithPageObjectsTests extends TestBase {
 
@@ -15,7 +16,7 @@ public class RegistrationWithPageObjectsTests extends TestBase {
     @Test
     void successfulRegistrationTest() {
 
-        String userName = "Alex";
+     String userName = "Alex";
         String lastName = "Ivanov";
         String userEmail = "ivanov@hmail.com";
         String address = "current address";
